@@ -1,6 +1,6 @@
 import { AntdCreateInferencer } from "@refinedev/inferencer/antd";
 import { GetServerSideProps } from "next";
-import { authProvider } from from "src/authProvider";
+import { authProvider } from "src/authProvider";
 
 export default function TestCreate() {
   return <AntdCreateInferencer />;

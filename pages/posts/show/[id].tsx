@@ -5,7 +5,7 @@ import { Typography, Tag } from "antd";
 import dataProvider from "@refinedev/simple-rest";
 
 import { ICategory, IPost } from "src/interfaces";
-import { authProvider } from from "src/authProvider";
+import { authProvider } from "src/authProvider";
 import { API_URL } from "src/constants";
 
 const { Title, Text } = Typography;

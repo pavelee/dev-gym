@@ -6,7 +6,7 @@ import dataProvider from "@refinedev/simple-rest";
 import { parseTableParams } from "@refinedev/nextjs-router";
 
 import { IUser } from "src/interfaces";
-import { authProvider } from from "src/authProvider";
+import { authProvider } from "src/authProvider";
 import { API_URL } from "src/constants";
 
 export const UserList: React.FC<{ initialData: GetListResponse<IUser> }> = ({

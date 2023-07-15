@@ -4,7 +4,7 @@ import dataProvider from "@refinedev/simple-rest";
 import { Form, Input, Select } from "antd";
 import { GetServerSideProps } from "next";
 
-import { authProvider } from from "src/authProvider";
+import { authProvider } from "src/authProvider";
 import { API_URL } from "src/constants";
 import { IPost } from "src/interfaces";
 
