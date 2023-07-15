@@ -1,94 +1,94 @@
-import {
-  ThemedLayoutV2,
-  ThemedSiderV2,
-  notificationProvider,
-} from "@refinedev/antd";
-import { GitHubBanner, Refine } from "@refinedev/core";
-import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
-import routerProvider, {
-  DocumentTitleHandler,
-  UnsavedChangesNotifier,
-} from "@refinedev/nextjs-router";
+import React from "react";
+import type { AppProps } from "next/app";
 import type { NextPage } from "next";
-import { AppProps } from "next/app";
 
-import { Header } from "@components/header";
-import { ColorModeContextProvider } from "@contexts";
+import { GitHubBanner, Refine } from "@refinedev/core";
+import {
+    ThemedLayoutV2,
+    notificationProvider,
+    RefineThemes,
+} from "@refinedev/antd";
+// import dataProvider from "@refinedev/simple-rest";
+import routerProvider, {
+    DocumentTitleHandler,
+    UnsavedChangesNotifier,
+} from "@refinedev/nextjs-router";
 import "@refinedev/antd/dist/reset.css";
-import { dataProvider } from "@refinedev/supabase";
+
+import { ConfigProvider } from "antd";
+import "@styles/global.css";
+
 import { authProvider } from "src/authProvider";
-import { supabaseClient } from "src/utility";
+import { API_URL } from "../src/constants";
 
-export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
-  noLayout?: boolean;
+import { dataProvider } from "@refinedev/supabase";
+import { supabaseClient } from "../src/utils/supabaseClient";
+
+export type ExtendedNextPage = NextPage & {
+    noLayout?: boolean;
 };
 
-type AppPropsWithLayout = AppProps & {
-  Component: NextPageWithLayout;
+type ExtendedAppProps = AppProps & {
+    Component: ExtendedNextPage;
 };
 
-function MyApp({ Component, pageProps }: AppPropsWithLayout): JSX.Element {
-  const renderComponent = () => {
-    if (Component.noLayout) {
-      return <Component {...pageProps} />;
-    }
+function MyApp({ Component, pageProps }: ExtendedAppProps): JSX.Element {
+    const renderComponent = () => {
+        if (Component.noLayout) {
+            return <Component {...pageProps} />;
+        }
+
+        return (
+            <ThemedLayoutV2>
+                <Component {...pageProps} />
+            </ThemedLayoutV2>
+        );
+    };
 
     return (
-      <ThemedLayoutV2
-        Header={() => <Header sticky />}
-        Sider={(props) => <ThemedSiderV2 {...props} fixed />}
-      >
-        <Component {...pageProps} />
-      </ThemedLayoutV2>
+        <>
+            <GitHubBanner />
+            <ConfigProvider theme={RefineThemes.Blue}>
+                <Refine
+                    authProvider={authProvider}
+                    routerProvider={routerProvider}
+                    dataProvider={dataProvider(supabaseClient)}
+                    resources={[
+                        // { name: "users", list: "/users" },
+                        // {
+                        //     name: "posts",
+                        //     list: "/posts",
+                        //     create: "/posts/create",
+                        //     edit: "/posts/edit/:id",
+                        //     show: "/posts/show/:id",
+                        //     meta: {
+                        //         canDelete: true,
+                        //     },
+                        // },
+                        {
+                            name: "tests",
+                            list: "/tests",
+                            // create: "/posts/create",
+                            // edit: "/posts/edit/:id",
+                            // show: "/posts/show/:id",
+                            meta: {
+                                canDelete: true,
+                            },
+                        },
+                    ]}
+                    options={{
+                        syncWithLocation: true,
+                        warnWhenUnsavedChanges: true,
+                    }}
+                    notificationProvider={notificationProvider}
+                >
+                    {renderComponent()}
+                    <UnsavedChangesNotifier />
+                    <DocumentTitleHandler />
+                </Refine>
+            </ConfigProvider>
+        </>
     );
-  };
-
-  return (
-    <>
-      <GitHubBanner />
-      <RefineKbarProvider>
-        <ColorModeContextProvider>
-          <Refine
-            routerProvider={routerProvider}
-            dataProvider={dataProvider(supabaseClient)}
-            authProvider={authProvider}
-            notificationProvider={notificationProvider}
-            resources={[
-              {
-                name: "blog_posts",
-                list: "/blog-posts",
-                create: "/blog-posts/create",
-                edit: "/blog-posts/edit/:id",
-                show: "/blog-posts/show/:id",
-                meta: {
-                  canDelete: true,
-                },
-              },
-              {
-                name: "categories",
-                list: "/categories",
-                create: "/categories/create",
-                edit: "/categories/edit/:id",
-                show: "/categories/show/:id",
-                meta: {
-                  canDelete: true,
-                },
-              },
-            ]}
-            options={{
-              syncWithLocation: true,
-              warnWhenUnsavedChanges: true,
-            }}
-          >
-            {renderComponent()}
-            <RefineKbar />
-            <UnsavedChangesNotifier />
-            <DocumentTitleHandler />
-          </Refine>
-        </ColorModeContextProvider>
-      </RefineKbarProvider>
-    </>
-  );
 }
 
 export default MyApp;
