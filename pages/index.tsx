@@ -2,7 +2,9 @@ import { NavigateToResource } from "@refinedev/nextjs-router";
 import { ExtendedNextPage } from "./_app";
 
 const Home: ExtendedNextPage = () => {
-    return <NavigateToResource resource="tests" />;
+    return <div>
+        <h1 className="text-1xl">Helo world!</h1>
+    </div>
 };
 
 export default Home;

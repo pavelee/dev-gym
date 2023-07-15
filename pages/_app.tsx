@@ -47,7 +47,6 @@ function MyApp({ Component, pageProps }: ExtendedAppProps): JSX.Element {
 
     return (
         <>
-            <GitHubBanner />
             <ConfigProvider theme={RefineThemes.Blue}>
                 <Refine
                     authProvider={authProvider}
@@ -67,10 +66,20 @@ function MyApp({ Component, pageProps }: ExtendedAppProps): JSX.Element {
                         // },
                         {
                             name: "tests",
-                            list: "/tests",
-                            // create: "/posts/create",
-                            // edit: "/posts/edit/:id",
-                            // show: "/posts/show/:id",
+                            list: "/admin/tests",
+                            create: "/admin/tests/create",
+                            edit: "/admin/tests/edit/:id",
+                            show: "/admin/tests/show/:id",
+                            meta: {
+                                canDelete: true,
+                            },
+                        },
+                        {
+                            name: "technologies",
+                            list: "/admin/technologies",
+                            create: "/admin/technologies/create",
+                            edit: "/admin/technologies/edit/:id",
+                            show: "/admin/technologies/show/:id",
                             meta: {
                                 canDelete: true,
                             },
