@@ -53,7 +53,7 @@ function MyApp({ Component, pageProps }: ExtendedAppProps): JSX.Element {
                     routerProvider={routerProvider}
                     dataProvider={dataProvider(supabaseClient)}
                     resources={[
-                        // { name: "users", list: "/users" },
+                        // { name: "users", list: "/admin/users" },
                         // {
                         //     name: "posts",
                         //     list: "/posts",
@@ -65,6 +65,16 @@ function MyApp({ Component, pageProps }: ExtendedAppProps): JSX.Element {
                         //     },
                         // },
                         {
+                            name: "technologies",
+                            list: "/admin/technologies",
+                            create: "/admin/technologies/create",
+                            edit: "/admin/technologies/edit/:id",
+                            show: "/admin/technologies/show/:id",
+                            meta: {
+                                canDelete: true,
+                            },
+                        },
+                        {
                             name: "tests",
                             list: "/admin/tests",
                             create: "/admin/tests/create",
@@ -75,11 +85,21 @@ function MyApp({ Component, pageProps }: ExtendedAppProps): JSX.Element {
                             },
                         },
                         {
-                            name: "technologies",
-                            list: "/admin/technologies",
-                            create: "/admin/technologies/create",
-                            edit: "/admin/technologies/edit/:id",
-                            show: "/admin/technologies/show/:id",
+                            name: "questions",
+                            list: "/admin/questions",
+                            create: "/admin/questions/create",
+                            edit: "/admin/questions/edit/:id",
+                            show: "/admin/questions/show/:id",
+                            meta: {
+                                canDelete: true,
+                            },
+                        },
+                        {
+                            name: "answers",
+                            list: "/admin/answers",
+                            create: "/admin/answers/create",
+                            edit: "/admin/answers/edit/:id",
+                            show: "/admin/answers/show/:id",
                             meta: {
                                 canDelete: true,
                             },
