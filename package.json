@@ -11,6 +11,7 @@
     "cypress:run": "cypress run -C ./cypress.config.ts"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.1.4",
     "@refinedev/antd": "^5.28.0",
     "@refinedev/cli": "^2.7.2",
     "@refinedev/core": "^4.26.4",

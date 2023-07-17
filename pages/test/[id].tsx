@@ -3,8 +3,9 @@ import { ExtendedNextPage } from "../_app";
 import { useList, useOne } from "@refinedev/core";
 import { IAnswer, IQuestion, ITest } from "src/interfaces";
 import { Button, Card, Checkbox, Radio, Result, Spin } from "antd";
-import { useEffect, useState } from "react";
+import { MouseEventHandler, useEffect, useState } from "react";
 import Link from "next/link";
+import { SmileOutlined } from '@ant-design/icons'
 
 export const FakeAiAnswer = ({ prompt }: { prompt?: string }) => {
     return (
@@ -116,6 +117,10 @@ const TestView = ({ test }: { test: ITest }) => {
             <div className="space-y-5">
                 <div className="text-2xl">{test.name}</div>
                 <div className="text-gray-500">{test.description}</div>
+                <div className="flex justify-center gap-5">
+                    <Button onClick={previousQuestion} disabled={isFirstQuestion(questions.data, questionsIndex)}>previous question</Button>
+                    <Button onClick={nextQuestion} disabled={isLastQuestion(questions.data, questionsIndex)}>Next question</Button>
+                </div>
                 <div>
                     {
                         questions.total === 0 &&
@@ -129,11 +134,6 @@ const TestView = ({ test }: { test: ITest }) => {
                         questions && questions.total > 0 &&
                         <div className="space-y-5">
                             <QuestionView key={questions.data[questionsIndex].id} question={questions.data[questionsIndex]} />
-                            <div className="space-x-5">
-                                <Button onClick={nextQuestion}>Check answer</Button>
-                                <Button onClick={previousQuestion} disabled={isFirstQuestion(questions.data, questionsIndex)}>previous question</Button>
-                                <Button onClick={nextQuestion} disabled={isLastQuestion(questions.data, questionsIndex)}>Next question</Button>
-                            </div>
                         </div>
                     }
                 </div>
@@ -145,6 +145,9 @@ const TestView = ({ test }: { test: ITest }) => {
 }
 
 const QuestionView = ({ question }: { question: IQuestion }) => {
+    const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
+    const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null)
+
     const { data: answers } = useList<IAnswer>({
         resource: 'answers',
         filters: [
@@ -155,6 +158,30 @@ const QuestionView = ({ question }: { question: IQuestion }) => {
             }
         ]
     })
+
+    const getChoosenAnswer = (): IAnswer | null => {
+        if (selectedAnswer && answers) {
+            let choosenAnswer = answers.data.filter((answer) => answer.id === selectedAnswer);
+            if (choosenAnswer) {
+                return choosenAnswer[0];
+            }
+        }
+        return null;
+    }
+
+    const isAnswerChosen = (): boolean => {
+        return selectedAnswer !== null && answers !== undefined
+    }
+
+    const checkAnswer = () => {
+        let answer = getChoosenAnswer();
+        console.log(answer);
+        if (answer) {
+            setIsAnswerCorrect(answer.correct);
+        } else {
+            setIsAnswerCorrect(null);
+        }
+    }
 
     if (answers) {
         return (
@@ -172,12 +199,46 @@ const QuestionView = ({ question }: { question: IQuestion }) => {
                 }
                 {
                     answers.total > 0 &&
-                    <div className="flex gap-5">
-                        <div className="w-1/2 space-y-5">
-                            {answers.data.map(answer => <AnswerView key={answer.id} answer={answer} />)}
-                        </div>
-                        <div className="w-1/2">
-                            <AiAnswer />
+                    <div className="space-y-5">
+                        <div className="flex gap-5">
+                            <div className="w-1/2 space-y-5">
+                                {answers.data.map(answer => <AnswerView isSelected={selectedAnswer === answer.id} setSelectedAnswer={setSelectedAnswer} key={answer.id} answer={answer} />)}
+                                <div className="flex justify-center">
+                                    <Button disabled={!isAnswerChosen()} onClick={() => { checkAnswer() }}>Check answer</Button>
+                                </div>
+                            </div>
+                            <div className="w-1/2">
+                                {
+                                    isAnswerCorrect === true &&
+                                    <Result
+                                        icon={<SmileOutlined />}
+                                        title="Great, we have done all the operations!"
+                                        extra={<Button type="primary">Next</Button>}
+                                    />
+                                }
+                                {
+                                    isAnswerCorrect === false &&
+                                    <Result
+                                        status={'error'}
+                                        title="Ops! Wrong answer! Try again!"
+                                        extra={<Button type="default" key="console">
+                                            Not sure? Get a hint from AI
+                                        </Button>}
+                                    />
+                                }
+                                {
+                                    isAnswerCorrect === null &&
+                                    <Result
+                                        title="Waiting for your answer"
+                                        extra={
+                                            <Button type="default" key="console">
+                                                Not sure? Get a hint from AI
+                                            </Button>
+                                        }
+                                    />
+                                }
+                                {/* <AiAnswer /> */}
+                            </div>
                         </div>
                     </div>
                 }
@@ -188,9 +249,20 @@ const QuestionView = ({ question }: { question: IQuestion }) => {
     return <Spin />
 }
 
-const AnswerView = ({ answer }: { answer: IAnswer }) => {
+const AnswerView = ({ answer, isSelected, setSelectedAnswer }: { answer: IAnswer, isSelected: boolean, setSelectedAnswer: Function }) => {
+    let selectedStyles = 'hover:bg-yellow-400';
+    if (isSelected) {
+        selectedStyles += ' bg-yellow-600';
+    }
+    const onSelect = () => {
+        if (isSelected) {
+            setSelectedAnswer(null);
+        } else {
+            setSelectedAnswer(answer.id);
+        }
+    }
     return (
-        <div className="border border-gray-400 p-2 rounded-xl">
+        <div onClick={onSelect} className={`border border-gray-400 p-2 rounded-xl cursor-pointer ${selectedStyles}`}>
             {answer.content}
         </div>
     )
