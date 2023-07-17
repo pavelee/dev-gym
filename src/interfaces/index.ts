@@ -17,3 +17,28 @@ export interface IUser {
     lastName: string;
     email: string;
 }
+
+export interface ITechnology {
+    id: number,
+    name: string
+}
+
+export interface ITest {
+    id: number,
+    name: string,
+    description: string,
+    technology: ITechnology
+}
+
+export interface IQuestion {
+    id: number,
+    title: string,
+    content: string,
+    answers: IAnswer[]
+}
+
+export interface IAnswer {
+    id: number,
+    content: string,
+    correct: boolean
+}
