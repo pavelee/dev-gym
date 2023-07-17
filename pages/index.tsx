@@ -45,6 +45,16 @@ const getTechnologyOptions = (technologies: ITechnology[]) => {
     return t;
 }
 
+const Banner = () => {
+    return (
+        <div className="h-96 bg-[#202020] w-full rounded-xl">
+            <div className="flex items-center justify-center h-full text-[#0F0] p-5">
+                <AiAnswer prompt="As programmer, write motivation text for programmer to learn new things. Text should encourde to do tests. Text should have at least 30 words. Signature as superpower AI machine" />
+            </div>
+        </div>
+    )
+}
+
 
 const Home: ExtendedNextPage = () => {
     const { data: technologies, isLoading: technologiesIsLoading } = useList({
@@ -55,11 +65,7 @@ const Home: ExtendedNextPage = () => {
     })
 
     return <div className="container mx-auto flex flex-col">
-        <div className="h-96 bg-blue-400 w-full rounded-xl">
-            <div className="flex items-center justify-center h-full text-white">
-                <AiAnswer prompt="As programmer, write motivation text for programmer to learn new things. Text should encourde to do tests. Text should have max 20 words" />
-            </div>
-        </div>
+        <Banner />
         <div className="flex flex-col">
             <div className="flex justify-center p-10">
                 <Checkbox.Group

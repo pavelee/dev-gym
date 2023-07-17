@@ -69,9 +69,9 @@ export const AiAnswer = ({
     };
 
     return (
-        <Spin spinning={loading}>
-            <pre dangerouslySetInnerHTML={{ __html: optimizedPost }}></pre>
-        </Spin>
+        // <Spin spinning={loading}>
+        <pre dangerouslySetInnerHTML={{ __html: `${optimizedPost}<span class="cursor"></span>` }}></pre>
+        // </Spin>
     )
 
 }

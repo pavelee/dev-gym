@@ -1,41 +1,14 @@
-<div align="center" style="margin: 30px;">
-<a href="https://refine.dev/">
-  <img src="https://raw.githubusercontent.com/refinedev/refine/master/logo.png"   style="width:350px;" align="center" />
-</a>
-<br />
-<br />
 
-<div align="center">
-    <a href="https://refine.dev">Home Page</a> |
-    <a href="https://discord.gg/refine">Discord</a> |
-    <a href="https://refine.dev/examples/">Examples</a> | 
-    <a href="https://refine.dev/blog/">Blog</a> | 
-    <a href="https://refine.dev/docs/">Documentation</a>
-</div>
-</div>
+To stworzyć wygląd aplikacji dla hakerów, moglibyśmy zastosować styl zainspirowany retro terminalami komputerowymi, które często są przedstawiane w popkulturze jako narzędzia hakerów. Oto moja propozycja dla schematu kolorów:
 
-<br />
+Tło: Ciemny szary (Hex: #202020) - Ten głęboki, ciemny szary kolor doda aplikacji nieco więcej głębi niż standardowe czarne tło, ale nadal zachowa ogólną estetykę "trybu ciemnego".
 
-<div align="center"><strong>Build your <a href="https://reactjs.org/">React</a>-based CRUD applications, without constraints.</strong><br>An open source, headless web application framework developed with flexibility in mind.
+Podstawowy tekst: Jasny neonowy zielony (Hex: #0F0) - To jest klasyczny "zielony kolor na czarnym" stosowany na starych ekranach komputerowych. Daje on wyraźny kontrast z ciemnym tłem i przyciąga uwagę.
 
-<br />
-<br />
+Ważny tekst / Podświetlone elementy: Jasny cytrynowy żółty (Hex: #FFFF00) - Ten kolor można używać do podkreślania ważnych elementów interfejsu, takich jak bieżące operacje, ważne wiadomości czy też aktywne pola wejściowe.
 
-[![Discord](https://img.shields.io/discord/837692625737613362.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/refine)
-[![Twitter Follow](https://img.shields.io/twitter/follow/refine_dev?style=social)](https://twitter.com/refine_dev)
+Dodatkowe kolory tekstu: Średni szary (Hex: #808080) dla mniej istotnych informacji i miękki czerwony (Hex: #FF0000) dla błędów i ostrzeżeń. Te kolory pomogą urozmaicić interfejs i pozwolą na łatwe zrozumienie różnych typów informacji.
 
-<a href="https://www.producthunt.com/posts/refine-3?utm_source=badge-top-post-badge&utm_medium=badge&utm_souce=badge-refine&#0045;3" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/top-post-badge.svg?post_id=362220&theme=light&period=daily" alt="refine - 100&#0037;&#0032;open&#0032;source&#0032;React&#0032;framework&#0032;to&#0032;build&#0032;web&#0032;apps&#0032;3x&#0032;faster | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
+Aktywne elementy UI / Przyciski: Głęboki morski niebieski (Hex: #009999) - Ten kolor jest wystarczająco jasny, by wyróżniać się na tle, ale nie na tyle intensywny, by odciągać uwagę. Może być używany do podkreślania aktywnych elementów interfejsu użytkownika, takich jak przyciski czy linki.
 
-</div>
-
-## Try it out on your local
-
-```bash
-npm create refine-app@latest -- --example with-nextjs
-```
-
-## Try it out on CodeSandbox
-
-<br/>
-
-[![Open with-nextjs example from refine](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/embed/github/refinedev/refine/tree/next/examples/with-nextjs?view=preview&theme=dark&codemirror=1)
+Pamiętaj, żeby dostosować intensywność kolorów, aby zapewnić odpowiedni kontrast dla użytkowników z różnymi typami widzenia i wyświetlaczy. Przydatne mogą być narzędzia do oceny kontrastu kolorów, takie jak te dostępne online.
