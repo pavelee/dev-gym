@@ -13,6 +13,57 @@ export const FakeAiAnswer = ({ prompt }: { prompt?: string }) => {
     )
 }
 
+export const SuperFakeAiAnswer = ({
+    prompt = "Show me example of classes in typescript",
+    endpoint = "/api/fake-ai",
+  }) => {
+    const [optimizedPost, setOptimizedPost] = useState("");
+    const [loading, setLoading] = useState(false);
+  
+    useEffect(() => {
+      const run = async () => {
+        await new Promise((resolve) => {
+          setTimeout(resolve, 1000);
+        });
+        optimizePost();
+      };
+      run();
+    }, []);
+  
+    const optimizePost = async () => {
+      setLoading(true);
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          prompt,
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+  
+      const data = await response.text();
+      setOptimizedPost(data);
+      setLoading(false);
+    };
+  
+    const characters = optimizedPost.split("");
+    return (
+      <pre>
+        {characters.map((char, index) => (
+          <span className="animated-text" style={{ [("--delay" as string)]: `${index * 0.01}s` }} key={index}>
+            {char}
+          </span>
+        ))}
+        <span className="cursor"></span>
+      </pre>
+    );
+  };
+
 export const AiAnswer = ({
     prompt = 'Show me example of classes in typescript',
     endpoint = '/api/ai'
