@@ -1,25 +1,58 @@
-import { AntdEditInferencer } from "@refinedev/inferencer/antd";
-import { GetServerSideProps } from "next";
-import { authProvider } from "src/authProvider";
+import React from "react";
+import { IResourceComponentsProps } from "@refinedev/core";
+import { Edit, useForm, useSelect } from "@refinedev/antd";
+import { Form, Input, Select } from "antd";
 
-export default function TestEdit() {
-    return <AntdEditInferencer />;
-}
+export const TestEdit: React.FC<IResourceComponentsProps> = () => {
+    const { formProps, saveButtonProps, queryResult } = useForm();
 
-export const getServerSideProps: GetServerSideProps<{}> = async (context) => {
-    const { authenticated, redirectTo } = await authProvider.check(context);
+    const testsData = queryResult?.data?.data;
 
-    if (!authenticated) {
-        return {
-            props: {},
-            redirect: {
-                destination: `${redirectTo}?to=${encodeURIComponent("/tests")}`,
-                permanent: false,
-            },
-        };
-    }
+    const { selectProps: technologySelectProps } = useSelect({
+        resource: "technologies",
+        defaultValue: testsData?.technology,
+        optionLabel: "name",
+    });
 
-    return {
-        props: {},
-    };
+    return (
+        <Edit saveButtonProps={saveButtonProps}>
+            <Form {...formProps} layout="vertical">
+                <Form.Item
+                    label="Id"
+                    name={["id"]}
+                    rules={[
+                        {
+                            required: true,
+                        },
+                    ]}
+                >
+                    <Input readOnly disabled />
+                </Form.Item>
+                <Form.Item
+                    label="Name"
+                    name={["name"]}
+                    rules={[
+                        {
+                            required: true,
+                        },
+                    ]}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    label="Technology"
+                    name={"technology"}
+                    rules={[
+                        {
+                            required: true,
+                        },
+                    ]}
+                >
+                    <Select {...technologySelectProps} />
+                </Form.Item>
+            </Form>
+        </Edit>
+    );
 };
+
+export default TestEdit;

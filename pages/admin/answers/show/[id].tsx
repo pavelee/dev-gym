@@ -1,25 +1,46 @@
-import { AntdShowInferencer } from "@refinedev/inferencer/antd";
-import { GetServerSideProps } from "next";
-import { authProvider } from "src/authProvider";
+import React from "react";
+import { IResourceComponentsProps, useShow, useOne } from "@refinedev/core";
+import {
+    Show,
+    NumberField,
+    TagField,
+    TextField,
+    BooleanField,
+} from "@refinedev/antd";
+import { Typography } from "antd";
 
-export default function TestEdit() {
-    return <AntdShowInferencer />;
-}
+const { Title } = Typography;
 
-export const getServerSideProps: GetServerSideProps<{}> = async (context) => {
-    const { authenticated, redirectTo } = await authProvider.check(context);
+export const AnswerShow: React.FC<IResourceComponentsProps> = () => {
+    const { queryResult } = useShow();
+    const { data, isLoading } = queryResult;
 
-    if (!authenticated) {
-        return {
-            props: {},
-            redirect: {
-                destination: `${redirectTo}?to=${encodeURIComponent("/tests")}`,
-                permanent: false,
-            },
-        };
-    }
+    const record = data?.data;
 
-    return {
-        props: {},
-    };
+    const { data: questionData, isLoading: questionIsLoading } = useOne({
+        resource: "questions",
+        id: record?.question || "",
+        queryOptions: {
+            enabled: !!record,
+        },
+    });
+
+    return (
+        <Show isLoading={isLoading}>
+            <Title level={5}>Id</Title>
+            <NumberField value={record?.id ?? ""} />
+            <Title level={5}>Content</Title>
+            <TextField value={record?.content} />
+            <Title level={5}>Correct</Title>
+            <BooleanField value={record?.correct} />
+            <Title level={5}>Question</Title>
+            {questionIsLoading ? (
+                <>Loading...</>
+            ) : (
+                <>{questionData?.data?.title}</>
+            )}
+        </Show>
+    );
 };
+
+export default AnswerShow;

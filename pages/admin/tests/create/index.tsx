@@ -1,25 +1,55 @@
-import { AntdCreateInferencer } from "@refinedev/inferencer/antd";
-import { GetServerSideProps } from "next";
-import { authProvider } from "src/authProvider";
+import React from "react";
+import { IResourceComponentsProps } from "@refinedev/core";
+import { Create, useForm, useSelect } from "@refinedev/antd";
+import { Form, Input, Select } from "antd";
 
-export default function TestCreate() {
-  return <AntdCreateInferencer />;
-}
+export const TestCreate: React.FC<IResourceComponentsProps> = () => {
+    const { formProps, saveButtonProps, queryResult } = useForm();
 
-export const getServerSideProps: GetServerSideProps<{}> = async (context) => {
-  const { authenticated, redirectTo } = await authProvider.check(context);
+    const { selectProps: technologySelectProps } = useSelect({
+        resource: "technologies",
+        optionLabel: "name",
+    });
 
-  if (!authenticated) {
-    return {
-      props: {},
-      redirect: {
-        destination: `${redirectTo}?to=${encodeURIComponent("/tests")}`,
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: {},
-  };
+    return (
+        <Create saveButtonProps={saveButtonProps}>
+            <Form {...formProps} layout="vertical">
+                <Form.Item
+                    label="Name"
+                    name={["name"]}
+                    rules={[
+                        {
+                            required: true,
+                        },
+                    ]}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    label="Technology"
+                    name={"technology"}
+                    rules={[
+                        {
+                            required: true,
+                        },
+                    ]}
+                >
+                    <Select {...technologySelectProps} />
+                </Form.Item>
+                <Form.Item
+                    label="Description"
+                    name={["description"]}
+                    rules={[
+                        {
+                            required: true,
+                        },
+                    ]}
+                >
+                    <Input />
+                </Form.Item>
+            </Form>
+        </Create>
+    );
 };
+
+export default TestCreate;

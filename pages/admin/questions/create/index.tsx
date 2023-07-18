@@ -1,25 +1,55 @@
-import { AntdCreateInferencer } from "@refinedev/inferencer/antd";
-import { GetServerSideProps } from "next";
-import { authProvider } from "src/authProvider";
+import React from "react";
+import { IResourceComponentsProps } from "@refinedev/core";
+import { Create, useForm, useSelect } from "@refinedev/antd";
+import { Form, Input, Select } from "antd";
 
-export default function QuestionCreate() {
-  return <AntdCreateInferencer />;
-}
+export const QuestionCreate: React.FC<IResourceComponentsProps> = () => {
+    const { formProps, saveButtonProps, queryResult } = useForm();
 
-export const getServerSideProps: GetServerSideProps<{}> = async (context) => {
-  const { authenticated, redirectTo } = await authProvider.check(context);
+    const { selectProps: testSelectProps } = useSelect({
+        resource: "tests",
+        optionLabel: "name",
+    });
 
-  if (!authenticated) {
-    return {
-      props: {},
-      redirect: {
-        destination: `${redirectTo}?to=${encodeURIComponent("/tests")}`,
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: {},
-  };
+    return (
+        <Create saveButtonProps={saveButtonProps}>
+            <Form {...formProps} layout="vertical">
+                <Form.Item
+                    label="Title"
+                    name={["title"]}
+                    rules={[
+                        {
+                            required: true,
+                        },
+                    ]}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    label="Content"
+                    name={["content"]}
+                    rules={[
+                        {
+                            required: true,
+                        },
+                    ]}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    label="Test"
+                    name={"test"}
+                    rules={[
+                        {
+                            required: true,
+                        },
+                    ]}
+                >
+                    <Select {...testSelectProps} />
+                </Form.Item>
+            </Form>
+        </Create>
+    );
 };
+
+export default QuestionCreate;

@@ -1,25 +1,24 @@
-import { AntdShowInferencer } from "@refinedev/inferencer/antd";
-import { GetServerSideProps } from "next";
-import { authProvider } from "src/authProvider";
+import React from "react";
+import { IResourceComponentsProps, useShow } from "@refinedev/core";
+import { Show, NumberField, TagField, TextField } from "@refinedev/antd";
+import { Typography } from "antd";
 
-export default function TechnologyEdit() {
-    return <AntdShowInferencer />;
-}
+const { Title } = Typography;
 
-export const getServerSideProps: GetServerSideProps<{}> = async (context) => {
-    const { authenticated, redirectTo } = await authProvider.check(context);
+export const TechnologyShow: React.FC<IResourceComponentsProps> = () => {
+    const { queryResult } = useShow();
+    const { data, isLoading } = queryResult;
 
-    if (!authenticated) {
-        return {
-            props: {},
-            redirect: {
-                destination: `${redirectTo}?to=${encodeURIComponent("/tests")}`,
-                permanent: false,
-            },
-        };
-    }
+    const record = data?.data;
 
-    return {
-        props: {},
-    };
+    return (
+        <Show isLoading={isLoading}>
+            <Title level={5}>Id</Title>
+            <NumberField value={record?.id ?? ""} />
+            <Title level={5}>Name</Title>
+            <TextField value={record?.name} />
+        </Show>
+    );
 };
+
+export default TechnologyShow;

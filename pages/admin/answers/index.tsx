@@ -1,37 +1,77 @@
 import React from "react";
-import { AntdListInferencer } from "@refinedev/inferencer/antd";
 import { IResourceComponentsProps, BaseRecord, useMany } from "@refinedev/core";
-import { useTable, List, DeleteButton, DateField } from "@refinedev/antd";
+import {
+    useTable,
+    List,
+    EditButton,
+    ShowButton,
+    DeleteButton,
+    BooleanField,
+} from "@refinedev/antd";
 import { Table, Space } from "antd";
-import { GetServerSideProps } from "next";
-import { authProvider } from "src/authProvider";
 
-const TestList: React.FC<IResourceComponentsProps> = () => {
+export const AnswerList: React.FC<IResourceComponentsProps> = () => {
     const { tableProps } = useTable({
         syncWithLocation: true,
     });
 
+    const { data: questionData, isLoading: questionIsLoading } = useMany({
+        resource: "questions",
+        ids: tableProps?.dataSource?.map((item) => item?.question) ?? [],
+        queryOptions: {
+            enabled: !!tableProps?.dataSource,
+        },
+    });
+
     return (
-        <AntdListInferencer />
+        <List>
+            <Table {...tableProps} rowKey="id">
+                <Table.Column dataIndex="id" title="Id" />
+                <Table.Column dataIndex="content" title="Content" />
+                <Table.Column
+                    dataIndex={["correct"]}
+                    title="Correct"
+                    render={(value: any) => <BooleanField value={value} />}
+                />
+                <Table.Column
+                    dataIndex={["question"]}
+                    title="Question"
+                    render={(value) =>
+                        questionIsLoading ? (
+                            <>Loading...</>
+                        ) : (
+                            questionData?.data?.find(
+                                (item) => item.id === value,
+                            )?.title
+                        )
+                    }
+                />
+                <Table.Column
+                    title="Actions"
+                    dataIndex="actions"
+                    render={(_, record: BaseRecord) => (
+                        <Space>
+                            <EditButton
+                                hideText
+                                size="small"
+                                recordItemId={record.id}
+                            />
+                            <ShowButton
+                                hideText
+                                size="small"
+                                recordItemId={record.id}
+                            />
+                            <DeleteButton
+                                hideText
+                                size="small"
+                                recordItemId={record.id}
+                            />
+                        </Space>
+                    )}
+                />
+            </Table>
+        </List>
     );
 };
 
-export default TestList;
-
-export const getServerSideProps: GetServerSideProps<{}> = async (context) => {
-    const { authenticated, redirectTo } = await authProvider.check(context);
-
-    if (!authenticated) {
-        return {
-            props: {},
-            redirect: {
-                destination: `${redirectTo}?to=${encodeURIComponent("/admin/tests")}`,
-                permanent: false,
-            },
-        };
-    }
-
-    return {
-        props: {},
-    };
-};
+export default AnswerList;

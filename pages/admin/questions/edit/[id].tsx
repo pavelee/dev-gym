@@ -1,25 +1,69 @@
-import { AntdEditInferencer } from "@refinedev/inferencer/antd";
-import { GetServerSideProps } from "next";
-import { authProvider } from "src/authProvider";
+import React from "react";
+import { IResourceComponentsProps } from "@refinedev/core";
+import { Edit, useForm, useSelect } from "@refinedev/antd";
+import { Form, Input, Select } from "antd";
 
-export default function QuestionEdit() {
-    return <AntdEditInferencer />;
-}
+export const QuestionEdit: React.FC<IResourceComponentsProps> = () => {
+    const { formProps, saveButtonProps, queryResult } = useForm();
 
-export const getServerSideProps: GetServerSideProps<{}> = async (context) => {
-    const { authenticated, redirectTo } = await authProvider.check(context);
+    const questionsData = queryResult?.data?.data;
 
-    if (!authenticated) {
-        return {
-            props: {},
-            redirect: {
-                destination: `${redirectTo}?to=${encodeURIComponent("/tests")}`,
-                permanent: false,
-            },
-        };
-    }
+    const { selectProps: testSelectProps } = useSelect({
+        resource: "tests",
+        defaultValue: questionsData?.test,
+        optionLabel: "name",
+    });
 
-    return {
-        props: {},
-    };
+    return (
+        <Edit saveButtonProps={saveButtonProps}>
+            <Form {...formProps} layout="vertical">
+                <Form.Item
+                    label="Id"
+                    name={["id"]}
+                    rules={[
+                        {
+                            required: true,
+                        },
+                    ]}
+                >
+                    <Input readOnly disabled />
+                </Form.Item>
+                <Form.Item
+                    label="Title"
+                    name={["title"]}
+                    rules={[
+                        {
+                            required: true,
+                        },
+                    ]}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    label="Content"
+                    name={["content"]}
+                    rules={[
+                        {
+                            required: true,
+                        },
+                    ]}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    label="Test"
+                    name={"test"}
+                    rules={[
+                        {
+                            required: true,
+                        },
+                    ]}
+                >
+                    <Select {...testSelectProps} />
+                </Form.Item>
+            </Form>
+        </Edit>
+    );
 };
+
+export default QuestionEdit;
