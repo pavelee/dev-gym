@@ -5,7 +5,7 @@ import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/ico
 import { useList } from "@refinedev/core";
 import { ITechnology, ITest } from "src/interfaces";
 import Link from "next/link";
-import { AiAnswer } from "./test/[id]";
+import { AiAnswer, FakeAiAnswer } from "./test/[id]";
 
 const TestCard = ({ test }: { test: ITest }) => {
     return (
@@ -45,11 +45,16 @@ const getTechnologyOptions = (technologies: ITechnology[]) => {
     return t;
 }
 
-const Banner = () => {
+export const Banner = () => {
     return (
         <div className="h-96 bg-[#202020] w-full rounded-xl">
             <div className="flex items-center justify-center h-full text-[#0F0] p-5">
-                <AiAnswer prompt="As programmer, write motivation text for programmer to learn new things. Text should encourde to do tests. Text should have at least 30 words. Signature as superpower AI machine" />
+                <FakeAiAnswer prompt={`
+                Dear fellow programmer, 
+                Embrace the power of knowledge! Learning new things expands your repertoire, fuels creativity, and propels innovation. Challenge yourself with tests, for they sharpen your skills and ignite growth. Remember, your thirst for learning is your superpower. Keep coding! 
+                Signature: Superpower AI Machine
+                `} />
+                {/* <AiAnswer prompt="As programmer, write motivation text for programmer to learn new things. Text should encourde to do tests. Text should have at least 30 words. Signature as superpower AI machine" /> */}
             </div>
         </div>
     )

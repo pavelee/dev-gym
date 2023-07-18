@@ -2,10 +2,10 @@ import { useRouter } from "next/router";
 import { ExtendedNextPage } from "../_app";
 import { useList, useOne } from "@refinedev/core";
 import { IAnswer, IQuestion, ITest } from "src/interfaces";
-import { Button, Card, Checkbox, Radio, Result, Spin } from "antd";
+import { Button, Card, Checkbox, Drawer, Radio, Result, Spin } from "antd";
 import { MouseEventHandler, useEffect, useState } from "react";
 import Link from "next/link";
-import { SmileOutlined } from '@ant-design/icons'
+import { Banner } from "pages";
 
 export const FakeAiAnswer = ({ prompt }: { prompt?: string }) => {
     return (
@@ -144,9 +144,43 @@ const TestView = ({ test }: { test: ITest }) => {
     return <Spin />
 }
 
+const Confetti = () => {
+    return (
+        <>
+            <div className="confetti"></div>
+            <div className="confetti blue"></div>
+            <div className="confetti green"></div>
+            <div className="confetti yellow"></div>
+        </>
+    )
+}
+
+const AiHintDrawer = ({
+    question,
+    onClose,
+    isOpen = false,
+}: { question: IQuestion, onClose: () => void, isOpen: boolean }) => {
+    return (
+        <Drawer
+            title="AI Assistant"
+            placement={'bottom'}
+            closable={false}
+            open={isOpen}
+            onClose={onClose}
+            key={'bottom'}
+        >
+            <AiAnswer
+                prompt=""
+                endpoint={`/api/question/hint-ai/${question.id}`}
+            />
+        </Drawer>
+    )
+}
+
 const QuestionView = ({ question }: { question: IQuestion }) => {
     const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
     const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null)
+    const [showQuestionHint, setShowQuestionHint] = useState(false);
 
     const { data: answers } = useList<IAnswer>({
         resource: 'answers',
@@ -158,6 +192,10 @@ const QuestionView = ({ question }: { question: IQuestion }) => {
             }
         ]
     })
+
+    const toggleQuestionHint = () => {
+        setShowQuestionHint(!showQuestionHint);
+    }
 
     const getChoosenAnswer = (): IAnswer | null => {
         if (selectedAnswer && answers) {
@@ -189,6 +227,11 @@ const QuestionView = ({ question }: { question: IQuestion }) => {
                 <div className="">
                     {question.title}
                 </div>
+                <AiHintDrawer
+                    question={question}
+                    onClose={toggleQuestionHint}
+                    isOpen={showQuestionHint}
+                />
                 {
                     answers.total === 0 &&
                     <Result
@@ -210,18 +253,20 @@ const QuestionView = ({ question }: { question: IQuestion }) => {
                             <div className="w-1/2">
                                 {
                                     isAnswerCorrect === true &&
-                                    <Result
-                                        icon={<SmileOutlined />}
-                                        title="Great, we have done all the operations!"
-                                        extra={<Button type="primary">Next</Button>}
-                                    />
+                                    <>
+                                        <Result
+                                            status={'success'}
+                                            title="Great, we have done all the operations!"
+                                            extra={<Button type="primary">Next</Button>}
+                                        />
+                                    </>
                                 }
                                 {
                                     isAnswerCorrect === false &&
                                     <Result
                                         status={'error'}
                                         title="Ops! Wrong answer! Try again!"
-                                        extra={<Button type="default" key="console">
+                                        extra={<Button onClick={toggleQuestionHint} type="default" key="console">
                                             Not sure? Get a hint from AI
                                         </Button>}
                                     />
@@ -231,7 +276,7 @@ const QuestionView = ({ question }: { question: IQuestion }) => {
                                     <Result
                                         title="Waiting for your answer"
                                         extra={
-                                            <Button type="default" key="console">
+                                            <Button onClick={toggleQuestionHint} type="default" key="console">
                                                 Not sure? Get a hint from AI
                                             </Button>
                                         }
@@ -278,11 +323,7 @@ const Test: ExtendedNextPage = () => {
     })
 
     return <div className="container mx-auto flex flex-col gap-5">
-        <div className="h-96 bg-blue-400 w-full rounded-xl">
-            <div className="flex items-center justify-center h-full text-white">
-                <FakeAiAnswer prompt="Write motivation text for programmer to learn new things. Text should have max 20 words" />
-            </div>
-        </div>
+        <Banner />
         <div>
             <Link href={`/`}>back to tests</Link>
         </div>
