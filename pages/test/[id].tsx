@@ -293,7 +293,7 @@ const QuestionView = ({ question, nextQuestionButton }: { question: IQuestion, n
                         <div className="flex flex-col md:flex-row gap-5">
                             <div className="md:w-1/2 space-y-5">
                                 <div className="">
-                                    {question.title}
+                                    {question.content}
                                 </div>
                                 {answers.data.map(answer => <AnswerView isSelected={selectedAnswer === answer.id} setSelectedAnswer={setSelectedAnswer} key={answer.id} answer={answer} />)}
                                 <div className="flex justify-center">
