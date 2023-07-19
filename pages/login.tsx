@@ -7,8 +7,8 @@ const Login: ExtendedNextPage = () => {
             type="login"
             formProps={{
                 initialValues: {
-                    email: "user@example.com",
-                    password: "1234",
+                    email: "",
+                    password: "",
                 },
             }}
         />
