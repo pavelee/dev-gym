@@ -26,7 +26,7 @@ const TestCard = ({ test }: { test: ITest }) => {
             </div>
             <div className="flex justify-center">
                 <Link href={`/test/${test.id}`}>
-                    <button className="text-action hover:text-selected p-2 rounded-xl text-2xl">TEST ME</button>
+                    <button className="text-action hover:text-selected p-2 rounded-xl text-2xl">START</button>
                 </Link>
             </div>
         </div>
