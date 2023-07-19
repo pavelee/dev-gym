@@ -61,17 +61,6 @@ function MyApp({ Component, pageProps }: ExtendedAppProps): JSX.Element {
                     routerProvider={routerProvider}
                     dataProvider={dataProvider(supabaseClient)}
                     resources={[
-                        // { name: "users", list: "/admin/users" },
-                        // {
-                        //     name: "posts",
-                        //     list: "/posts",
-                        //     create: "/posts/create",
-                        //     edit: "/posts/edit/:id",
-                        //     show: "/posts/show/:id",
-                        //     meta: {
-                        //         canDelete: true,
-                        //     },
-                        // },
                         {
                             name: "technologies",
                             list: "/admin/technologies",

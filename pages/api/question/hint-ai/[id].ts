@@ -40,20 +40,6 @@ async function fetchQuestionWithAnswers(questionId: string) {
   return questionData;
 }
 
-async function fetchRecordById(table: string, id: string) {
-  const { data, error }: PostgrestResponse<any> = await supabaseClient
-    .from(table)
-    .select("*")
-    .eq("id", id)
-    .single();
-
-  if (error) {
-    throw error;
-  }
-
-  return data;
-}
-
 export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   console.log(req.url);
   const id = getIdParam(req.url!);
@@ -62,21 +48,17 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const question = await fetchQuestionWithAnswers(id);
 
   if (!question) {
-    throw new Error("asdsad");
+    throw new Error("No question found");
   }
 
-  let answers = [];
-  for (let answer of question.answers) {
-    answers.push(`${answer.content}`);
-  }
   const prompt = `
   As AI assistance for learning programming
   There is question:
+
   ${question.content}
-  with possible answers
+
   Do not answer question, just give some tip that could help to answer for question.
   Provide some documentation sources that could help to find answer
-  ${answers.join("\n")}
   `;
 
   //   console.log(prompt);
