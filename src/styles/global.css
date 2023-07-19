@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+/* teailwind fix */
+.ant-btn-primary { 
+  background-color: #1677ff;
+}
+
 html,
 body {
   margin: 0;
