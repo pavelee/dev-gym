@@ -6,8 +6,27 @@ import { useList } from "@refinedev/core";
 import { ITechnology, ITest } from "src/interfaces";
 import Link from "next/link";
 import { AiAnswer, FakeAiAnswer, SuperFakeAiAnswer } from "./test/[id]";
+import { Layout } from 'src/components/Layout';
 
 const TestCard = ({ test }: { test: ITest }) => {
+
+    return (
+        <div className="w-1/4 text-primary border-minor border p-5 rounded-xl flex flex-col gap-5 justify-between">
+            <div className="italic text-2xl h-32 flex justify-center items-center border-b border-b-primary">
+                typescript
+            </div>
+            <div className="border-b border-b-primary space-y-5 pb-5">
+                <div>{test.name}</div>
+                <div className="text-secondary">{test.description}</div>
+            </div>
+            <div className="flex justify-center">
+                <Link href={`/test/${test.id}`}>
+                    <button className="text-action hover:text-selected p-2 rounded-xl text-2xl">TEST ME</button>
+                </Link>
+            </div>
+        </div>
+    )
+
     return (
         <Card
             style={{ width: 300 }}
@@ -47,8 +66,8 @@ const getTechnologyOptions = (technologies: ITechnology[]) => {
 
 export const Banner = () => {
     return (
-        <div className="h-96 bg-[#202020] w-full rounded-xl">
-            <div className="flex items-center justify-center h-full text-[#0F0] p-5">
+        <div className="h-96 w-full rounded-xl">
+            <div className="flex items-center justify-center h-full text-primary p-5">
                 <SuperFakeAiAnswer prompt={`
                 Dear fellow programmer, 
                 Embrace the power of knowledge! Learning new things expands your repertoire, fuels creativity, and propels innovation. Challenge yourself with tests, for they sharpen your skills and ignite growth. Remember, your thirst for learning is your superpower. Keep coding! 
@@ -69,25 +88,27 @@ const Home: ExtendedNextPage = () => {
         resource: 'tests'
     })
 
-    return <div className="container mx-auto flex flex-col">
-        <Banner />
-        <div className="flex flex-col">
-            <div className="flex justify-center p-10">
+    return (
+        <Layout>
+            <Banner />
+            <div className="flex flex-col">
+                {/* <div className="flex justify-center p-10">
                 <Checkbox.Group
                     options={technologies ? getTechnologyOptions(technologies.data as ITechnology[]) : []}
                     defaultValue={['Pear']}
                     onChange={() => { }}
                 />
+            </div> */}
+                <div className="grow flex gap-5 flex-wrap justify-center">
+                    {
+                        !testsIsLoading && tests && tests.data.map(test => (
+                            <TestCard key={test.id} test={test as ITest} />
+                        ))
+                    }
+                </div>
             </div>
-            <div className="grow flex gap-3 flex-wrap justify-center">
-                {
-                    !testsIsLoading && tests && tests.data.map(test => (
-                        <TestCard key={test.id} test={test as ITest} />
-                    ))
-                }
-            </div>
-        </div>
-    </div>
+        </Layout>
+    )
 };
 
 export default Home;

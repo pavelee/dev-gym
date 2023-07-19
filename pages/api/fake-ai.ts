@@ -24,8 +24,7 @@ export default async function handler(
   let speach = `
 Dear fellow programmer,
 Embrace the power of knowledge! Learning new things expands your repertoire, fuels creativity, and propels innovation. Challenge yourself with tests, for they sharpen your skills and ignite growth. Remember, your thirst for learning is your superpower. Keep coding!
-Signature: Superpower AI Machine
-`;
+Signature: Superpower AI Machine`;
   for (let i = 0; i < speach.length; i++) {
     await new Promise((resolve) => {
       setTimeout(() => {

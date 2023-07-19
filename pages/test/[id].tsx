@@ -6,6 +6,7 @@ import { Button, Card, Checkbox, Drawer, Radio, Result, Spin } from "antd";
 import { MouseEventHandler, useEffect, useState } from "react";
 import Link from "next/link";
 import { Banner } from "pages";
+import { Layout } from "@components/Layout";
 
 export const FakeAiAnswer = ({ prompt }: { prompt?: string }) => {
     return (
@@ -16,53 +17,54 @@ export const FakeAiAnswer = ({ prompt }: { prompt?: string }) => {
 export const SuperFakeAiAnswer = ({
     prompt = "Show me example of classes in typescript",
     endpoint = "/api/fake-ai",
-  }) => {
+}) => {
     const [optimizedPost, setOptimizedPost] = useState("");
     const [loading, setLoading] = useState(false);
-  
+
     useEffect(() => {
-      const run = async () => {
-        await new Promise((resolve) => {
-          setTimeout(resolve, 1000);
-        });
-        optimizePost();
-      };
-      run();
+        const run = async () => {
+            await new Promise((resolve) => {
+                setTimeout(resolve, 1000);
+            });
+            optimizePost();
+        };
+        run();
     }, []);
-  
+
     const optimizePost = async () => {
-      setLoading(true);
-      const response = await fetch(endpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          prompt,
-        }),
-      });
-  
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
-  
-      const data = await response.text();
-      setOptimizedPost(data);
-      setLoading(false);
+        setLoading(true);
+        const response = await fetch(endpoint, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                prompt,
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error(response.statusText);
+        }
+
+        const data = await response.text();
+        setOptimizedPost(data);
+        setLoading(false);
     };
-  
+
     const characters = optimizedPost.split("");
     return (
-      <pre>
-        {characters.map((char, index) => (
-          <span className="animated-text" style={{ [("--delay" as string)]: `${index * 0.01}s` }} key={index}>
-            {char}
-          </span>
-        ))}
-        <span className="cursor"></span>
-      </pre>
+        <pre>
+            {characters.map((char, index) => {
+                return (
+                    <span className="animated-text" dangerouslySetInnerHTML={{ __html: `${char}` }} style={{ [("--delay" as string)]: `${index * 0.01}s` }} key={index}>
+                        {/* {char} */}
+                    </span>)
+            })}
+            <span className="cursor"></span>
+        </pre>
     );
-  };
+};
 
 export const AiAnswer = ({
     prompt = 'Show me example of classes in typescript',
@@ -127,6 +129,26 @@ export const AiAnswer = ({
 
 }
 
+const PrimaryButton = ({ text, onClick, isDisabled = false }: { text: string, onClick: any, isDisabled?: boolean }) => {
+    let extraStyles = '';
+    if (isDisabled) {
+        extraStyles = ' opacity-20 cursor-not-allowed ';
+    }
+    return (
+        <button className={`text-primary cursor-pointer border hover:bg-action border-minor rounded-md p-2 ${extraStyles}`} onClick={onClick} disabled={isDisabled}>{text}</button>
+    )
+}
+
+const SecondaryButton = ({ text, onClick, isDisabled = false }: { text: string, onClick: any, isDisabled?: boolean }) => {
+    let extraStyles = '';
+    if (isDisabled) {
+        extraStyles = ' opacity-20 cursor-not-allowed ';
+    }
+    return (
+        <button className={`text-primary cursor-pointer hover:bg-action border border-minor rounded-md p-2 ${extraStyles}`} onClick={onClick} disabled={isDisabled}>{text}</button>
+    )
+}
+
 const TestView = ({ test }: { test: ITest }) => {
     const [questionsIndex, setQuestionIndex] = useState<number>(0);
 
@@ -165,12 +187,20 @@ const TestView = ({ test }: { test: ITest }) => {
 
     if (questions) {
         return (
-            <div className="space-y-5">
+            <div className="space-y-5 text-primary border-minor border p-5">
                 <div className="text-2xl">{test.name}</div>
-                <div className="text-gray-500">{test.description}</div>
+                <div className="text-secondary">{test.description}</div>
                 <div className="flex justify-center gap-5">
-                    <Button onClick={previousQuestion} disabled={isFirstQuestion(questions.data, questionsIndex)}>previous question</Button>
-                    <Button onClick={nextQuestion} disabled={isLastQuestion(questions.data, questionsIndex)}>Next question</Button>
+                    <SecondaryButton
+                        text="previous question"
+                        onClick={previousQuestion}
+                        isDisabled={isFirstQuestion(questions.data, questionsIndex)}
+                    />
+                    <SecondaryButton
+                        text="next question"
+                        onClick={nextQuestion}
+                        isDisabled={isLastQuestion(questions.data, questionsIndex)}
+                    />
                 </div>
                 <div>
                     {
@@ -213,12 +243,28 @@ const AiHintDrawer = ({
 }: { question: IQuestion, onClose: () => void, isOpen: boolean }) => {
     return (
         <Drawer
-            title="AI Assistant"
+            title={<div className="text-primary border-b pb-5 border-minor">AI Assistant</div>}
             placement={'bottom'}
             closable={false}
             open={isOpen}
             onClose={onClose}
+            height={document.body.scrollHeight / 2}
             key={'bottom'}
+            headerStyle={
+                {
+                    backgroundColor: '#202020',
+                    color: '#0F0',
+                    border: '1px',
+                    borderTopColor: '#FFFF00'
+                }
+            }
+            bodyStyle={
+                {
+                    backgroundColor: '#202020',
+                    color: '#0F0'
+                }
+            }
+        // rootClassName={'text-primary'}
         >
             <AiAnswer
                 prompt=""
@@ -298,7 +344,11 @@ const QuestionView = ({ question }: { question: IQuestion }) => {
                             <div className="w-1/2 space-y-5">
                                 {answers.data.map(answer => <AnswerView isSelected={selectedAnswer === answer.id} setSelectedAnswer={setSelectedAnswer} key={answer.id} answer={answer} />)}
                                 <div className="flex justify-center">
-                                    <Button disabled={!isAnswerChosen()} onClick={() => { checkAnswer() }}>Check answer</Button>
+                                    <PrimaryButton
+                                        text="check answer"
+                                        onClick={checkAnswer}
+                                        isDisabled={!isAnswerChosen()}
+                                    />
                                 </div>
                             </div>
                             <div className="w-1/2">
@@ -307,29 +357,42 @@ const QuestionView = ({ question }: { question: IQuestion }) => {
                                     <>
                                         <Result
                                             status={'success'}
-                                            title="Great, we have done all the operations!"
-                                            extra={<Button type="primary">Next</Button>}
+                                            title={<span className="text-primary">Great, we have done all the operations!</span>}
+                                            extra={<PrimaryButton
+                                                text="Next question"
+                                                onClick={toggleQuestionHint}
+                                            />}
                                         />
                                     </>
                                 }
                                 {
                                     isAnswerCorrect === false &&
                                     <Result
+                                        style={{
+                                            color: '#0F0'
+                                        }}
                                         status={'error'}
-                                        title="Ops! Wrong answer! Try again!"
-                                        extra={<Button onClick={toggleQuestionHint} type="default" key="console">
-                                            Not sure? Get a hint from AI
-                                        </Button>}
+                                        title={<span className="text-selected">Ops! Wrong answer! Try again!</span>}
+                                        extra={
+                                            <PrimaryButton
+                                                text="Not sure? Get a hint from AI"
+                                                onClick={toggleQuestionHint}
+                                            />
+                                        }
                                     />
                                 }
                                 {
                                     isAnswerCorrect === null &&
                                     <Result
-                                        title="Waiting for your answer"
+                                        icon={null}
+                                        title={
+                                            <span className="text-primary">Waiting for your answer</span>
+                                        }
                                         extra={
-                                            <Button onClick={toggleQuestionHint} type="default" key="console">
-                                                Not sure? Get a hint from AI
-                                            </Button>
+                                            <PrimaryButton
+                                                text="Not sure? Get a hint from AI"
+                                                onClick={toggleQuestionHint}
+                                            />
                                         }
                                     />
                                 }
@@ -346,9 +409,9 @@ const QuestionView = ({ question }: { question: IQuestion }) => {
 }
 
 const AnswerView = ({ answer, isSelected, setSelectedAnswer }: { answer: IAnswer, isSelected: boolean, setSelectedAnswer: Function }) => {
-    let selectedStyles = 'hover:bg-yellow-400';
+    let selectedStyles = 'hover:bg-action';
     if (isSelected) {
-        selectedStyles += ' bg-yellow-600';
+        selectedStyles += ' bg-action';
     }
     const onSelect = () => {
         if (isSelected) {
@@ -358,7 +421,7 @@ const AnswerView = ({ answer, isSelected, setSelectedAnswer }: { answer: IAnswer
         }
     }
     return (
-        <div onClick={onSelect} className={`border border-gray-400 p-2 rounded-xl cursor-pointer ${selectedStyles}`}>
+        <div onClick={onSelect} className={`border border-minor p-2 rounded-xl cursor-pointer ${selectedStyles}`}>
             {answer.content}
         </div>
     )
@@ -373,9 +436,9 @@ const Test: ExtendedNextPage = () => {
         id: (id as string)
     })
 
-    return <div className="container mx-auto flex flex-col gap-5">
-        <Banner />
-        <div>
+    return <Layout>
+        {/* <Banner /> */}
+        <div className="text-primary">
             <Link href={`/`}>back to tests</Link>
         </div>
         <div className="flex flex-col">
@@ -383,7 +446,7 @@ const Test: ExtendedNextPage = () => {
                 test && <TestView test={test.data as ITest} />
             }
         </div>
-    </div>
+    </Layout>
 }
 
 export default Test;
