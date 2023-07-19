@@ -1,14 +1,67 @@
+## What I built 
 
-To stworzyć wygląd aplikacji dla hakerów, moglibyśmy zastosować styl zainspirowany retro terminalami komputerowymi, które często są przedstawiane w popkulturze jako narzędzia hakerów. Oto moja propozycja dla schematu kolorów:
+👨‍💻 Dev-Gym is a basic testing platform with a hacker-inspired design, created to help programmers hone their skills. 
 
-Tło: Ciemny szary (Hex: #202020) - Ten głęboki, ciemny szary kolor doda aplikacji nieco więcej głębi niż standardowe czarne tło, ale nadal zachowa ogólną estetykę "trybu ciemnego".
+### Category Submission: 
 
-Podstawowy tekst: Jasny neonowy zielony (Hex: #0F0) - To jest klasyczny "zielony kolor na czarnym" stosowany na starych ekranach komputerowych. Daje on wyraźny kontrast z ciemnym tłem i przyciąga uwagę.
+Best Project built using Supabase as the main data provider for the refine app.
 
-Ważny tekst / Podświetlone elementy: Jasny cytrynowy żółty (Hex: #FFFF00) - Ten kolor można używać do podkreślania ważnych elementów interfejsu, takich jak bieżące operacje, ważne wiadomości czy też aktywne pola wejściowe.
+### App Link
 
-Dodatkowe kolory tekstu: Średni szary (Hex: #808080) dla mniej istotnych informacji i miękki czerwony (Hex: #FF0000) dla błędów i ostrzeżeń. Te kolory pomogą urozmaicić interfejs i pozwolą na łatwe zrozumienie różnych typów informacji.
+https://dev-gym.vercel.app
 
-Aktywne elementy UI / Przyciski: Głęboki morski niebieski (Hex: #009999) - Ten kolor jest wystarczająco jasny, by wyróżniać się na tle, ale nie na tyle intensywny, by odciągać uwagę. Może być używany do podkreślania aktywnych elementów interfejsu użytkownika, takich jak przyciski czy linki.
+### Screenshots 
 
-Pamiętaj, żeby dostosować intensywność kolorów, aby zapewnić odpowiedni kontrast dla użytkowników z różnymi typami widzenia i wyświetlaczy. Przydatne mogą być narzędzia do oceny kontrastu kolorów, takie jak te dostępne online.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/zwaq6sg2ohy5gws8oc1o.png)
+
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/fxgl56ggnzcxffyh2xhh.png)
+
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/1648lkd1u9rgjn5z5gbu.png)
+
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/m1v4o7nups44k7j7y0yu.png)
+
+### Description 
+
+🕵️‍♂️ Hacker-Inspired Design: Dev-Gym sports a cool, hacker-inspired design to engage tech enthusiasts.
+
+🤖 GPT-4 Assisted Tests: The coding tests in this prototype are pre-generated manually with the help of the advanced GPT-4 model.
+
+💡 AI-Powered Hints: Dev-Gym integrates AI-driven hints during tests, offering real-time assistance
+
+🔗 Supabase Integration: Dev-Gym is integrated with Supabase, where the data is stored.
+
+📝 Admin Panel: The platform includes a panel where users can add new tests.
+
+### Link to Source Code 
+
+https://github.com/pavelee/dev-gym
+
+### Permissive License 
+
+MIT
+
+## Background (What made you decide to build this particular app? What inspired you?) 
+
+Fascinated by AI's transformative power in programmer education. 
+
+Looking for a positive future with AI.
+
+### How I built it (How did you utilize refine? Did you learn something new along the way? Pick up a new skill?) 
+
+- Tech stack: Next.js, Antd UI, Supabase
+- Using Refine built-in integration with Supabase. Really cool!
+   - instant integration! wow!
+   - Utilizing Refine's hooks for data fetching. In my opinion it's the best part of the framework.
+- Admin panel built with generated code
+   - Firstly I was a little bit confused, but after tutorial it become clear.
+   - it really speed up CRUD job
+   - I love idea to copy and adjust code, a lot of flexibility 
+- OpenAI integration for AI hints
+
+### Additional Resources/Info
+
+Admin panel is located at path /admin
