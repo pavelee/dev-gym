@@ -3,7 +3,7 @@ import { ExtendedNextPage } from "../_app";
 import { useList, useOne } from "@refinedev/core";
 import { IAnswer, IQuestion, ITest } from "src/interfaces";
 import { Button, Card, Checkbox, Drawer, Radio, Result, Spin } from "antd";
-import { MouseEventHandler, useEffect, useState } from "react";
+import { MouseEventHandler, ReactNode, useEffect, useState } from "react";
 import Link from "next/link";
 import { Banner } from "pages";
 import { Layout } from "@components/Layout";
@@ -214,7 +214,15 @@ const TestView = ({ test }: { test: ITest }) => {
                     {
                         questions && questions.total > 0 &&
                         <div className="space-y-5">
-                            <QuestionView key={questions.data[questionsIndex].id} question={questions.data[questionsIndex]} />
+                            <QuestionView
+                                key={questions.data[questionsIndex].id}
+                                nextQuestionButton={<SecondaryButton
+                                    text="next question"
+                                    onClick={nextQuestion}
+                                    isDisabled={isLastQuestion(questions.data, questionsIndex)}
+                                />}
+                                question={questions.data[questionsIndex]}
+                            />
                         </div>
                     }
                 </div>
@@ -274,7 +282,7 @@ const AiHintDrawer = ({
     )
 }
 
-const QuestionView = ({ question }: { question: IQuestion }) => {
+const QuestionView = ({ question, nextQuestionButton }: { question: IQuestion, nextQuestionButton?: ReactNode }) => {
     const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
     const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null)
     const [showQuestionHint, setShowQuestionHint] = useState(false);
@@ -358,10 +366,11 @@ const QuestionView = ({ question }: { question: IQuestion }) => {
                                         <Result
                                             status={'success'}
                                             title={<span className="text-primary">Great, we have done all the operations!</span>}
-                                            extra={<PrimaryButton
-                                                text="Next question"
-                                                onClick={toggleQuestionHint}
-                                            />}
+                                            extra={
+                                                <>
+                                                { nextQuestionButton && nextQuestionButton }
+                                                </>
+                                            }
                                         />
                                     </>
                                 }
