@@ -16,7 +16,7 @@ const TestCard = ({ test }: { test: ITest }) => {
     });
 
     return (
-        <div className="w-1/4 text-primary border-minor border p-5 rounded-xl flex flex-col gap-5 justify-between">
+        <div className="md:w-1/4 text-primary border-minor border p-5 rounded-xl flex flex-col gap-5 justify-between">
             <div className="italic text-2xl h-32 flex justify-center items-center border-b border-b-primary">
                 {data && <span>{data.data.name}</span>}
             </div>
@@ -68,7 +68,7 @@ const Home: ExtendedNextPage = () => {
                     onChange={() => { }}
                 />
             </div> */}
-                <div className="grow flex gap-5 flex-wrap justify-center">
+                <div className="grow flex flex-col md:flex-row gap-5 flex-wrap justify-center">
                     {
                         !testsIsLoading && tests && tests.data.map(test => (
                             <TestCard key={test.id} test={test as ITest} />
