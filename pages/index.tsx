@@ -5,7 +5,7 @@ import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/ico
 import { useList, useOne } from "@refinedev/core";
 import { ITechnology, ITest } from "src/interfaces";
 import Link from "next/link";
-import { AiAnswer, FakeAiAnswer, SuperFakeAiAnswer } from "./test/[id]";
+import { AiAnswer, FakeAiAnswer } from "./test/[id]";
 import { Layout } from 'src/components/Layout';
 
 const TestCard = ({ test }: { test: ITest }) => {
@@ -52,7 +52,7 @@ export const Banner = () => {
     return (
         <div className="h-96 w-full rounded-xl">
             <div className="flex items-center justify-center h-full text-primary p-5">
-                <SuperFakeAiAnswer prompt={`
+                <FakeAiAnswer text={`
                 Dear fellow programmer, 
                 Embrace the power of knowledge! Learning new things expands your repertoire, fuels creativity, and propels innovation. Challenge yourself with tests, for they sharpen your skills and ignite growth. Remember, your thirst for learning is your superpower. Keep coding! 
                 Signature: Superpower AI Machine

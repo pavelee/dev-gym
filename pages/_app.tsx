@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import type { AppProps } from "next/app";
 import type { NextPage } from "next";
 
@@ -7,6 +7,7 @@ import {
     ThemedLayoutV2,
     notificationProvider,
     RefineThemes,
+    ThemedTitleV2,
 } from "@refinedev/antd";
 // import dataProvider from "@refinedev/simple-rest";
 import routerProvider, {
@@ -39,7 +40,14 @@ function MyApp({ Component, pageProps }: ExtendedAppProps): JSX.Element {
         }
 
         return (
-            <ThemedLayoutV2>
+            <ThemedLayoutV2
+                Title={({ collapsed }) => (
+                    <ThemedTitleV2
+                        collapsed={collapsed}
+                        text="dev-gym"
+                    />
+                )}
+            >
                 <Component {...pageProps} />
             </ThemedLayoutV2>
         );

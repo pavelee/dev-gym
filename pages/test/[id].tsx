@@ -8,60 +8,18 @@ import Link from "next/link";
 import { Banner } from "pages";
 import { Layout } from "@components/Layout";
 
-export const FakeAiAnswer = ({ prompt }: { prompt?: string }) => {
-    return (
-        <AiAnswer endpoint="/api/fake-ai" />
-    )
+const MagicCursor = () => {
+    return (<span className="cursor"></span>);
 }
 
-export const SuperFakeAiAnswer = ({
-    prompt = "Show me example of classes in typescript",
-    endpoint = "/api/fake-ai",
+export const FakeAiAnswer = ({
+    text = "Show me example of classes in typescript",
 }) => {
-    const [optimizedPost, setOptimizedPost] = useState("");
-    const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-        const run = async () => {
-            await new Promise((resolve) => {
-                setTimeout(resolve, 1000);
-            });
-            optimizePost();
-        };
-        run();
-    }, []);
-
-    const optimizePost = async () => {
-        setLoading(true);
-        const response = await fetch(endpoint, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                prompt,
-            }),
-        });
-
-        if (!response.ok) {
-            throw new Error(response.statusText);
-        }
-
-        const data = await response.text();
-        setOptimizedPost(data);
-        setLoading(false);
-    };
-
-    const characters = optimizedPost.split("");
+    const characters = text.trim().replace(/^ +/gm, '').split("");
     return (
         <pre>
-            {characters.map((char, index) => {
-                return (
-                    <span className="animated-text" dangerouslySetInnerHTML={{ __html: `${char}` }} style={{ [("--delay" as string)]: `${index * 0.01}s` }} key={index}>
-                        {/* {char} */}
-                    </span>)
-            })}
-            <span className="cursor"></span>
+            {characters}
+            <MagicCursor />
         </pre>
     );
 };
@@ -179,8 +137,6 @@ const TestView = ({ test }: { test: ITest }) => {
         ]
     })
 
-    console.log(questions);
-
     // if (!questions && (questions && !questions.data)) {
     //     return <Spin />
     // }
@@ -231,17 +187,6 @@ const TestView = ({ test }: { test: ITest }) => {
     }
 
     return <Spin />
-}
-
-const Confetti = () => {
-    return (
-        <>
-            <div className="confetti"></div>
-            <div className="confetti blue"></div>
-            <div className="confetti green"></div>
-            <div className="confetti yellow"></div>
-        </>
-    )
 }
 
 const AiHintDrawer = ({
@@ -329,9 +274,6 @@ const QuestionView = ({ question, nextQuestionButton }: { question: IQuestion, n
     if (answers) {
         return (
             <div className="space-y-5">
-                <div className="">
-                    {question.title}
-                </div>
                 <AiHintDrawer
                     question={question}
                     onClose={toggleQuestionHint}
@@ -347,9 +289,12 @@ const QuestionView = ({ question, nextQuestionButton }: { question: IQuestion, n
                 }
                 {
                     answers.total > 0 &&
-                    <div className="space-y-5">
-                        <div className="flex gap-5">
-                            <div className="w-1/2 space-y-5">
+                    <div className="space-y-10">
+                        <div className="flex flex-col md:flex-row gap-5">
+                            <div className="md:w-1/2 space-y-5">
+                                <div className="">
+                                    {question.title}
+                                </div>
                                 {answers.data.map(answer => <AnswerView isSelected={selectedAnswer === answer.id} setSelectedAnswer={setSelectedAnswer} key={answer.id} answer={answer} />)}
                                 <div className="flex justify-center">
                                     <PrimaryButton
@@ -359,52 +304,54 @@ const QuestionView = ({ question, nextQuestionButton }: { question: IQuestion, n
                                     />
                                 </div>
                             </div>
-                            <div className="w-1/2">
-                                {
-                                    isAnswerCorrect === true &&
-                                    <>
+                            <div className="md:w-1/2">
+                                <div className="w-full">
+                                    {
+                                        isAnswerCorrect === true &&
+                                        <>
+                                            <Result
+                                                status={'success'}
+                                                title={<span className="text-primary">Great, we have done all the operations!</span>}
+                                                extra={
+                                                    <>
+                                                        {nextQuestionButton && nextQuestionButton}
+                                                    </>
+                                                }
+                                            />
+                                        </>
+                                    }
+                                    {
+                                        isAnswerCorrect === false &&
                                         <Result
-                                            status={'success'}
-                                            title={<span className="text-primary">Great, we have done all the operations!</span>}
+                                            style={{
+                                                color: '#0F0'
+                                            }}
+                                            status={'error'}
+                                            title={<span className="text-selected">Ops! Wrong answer! Try again!</span>}
                                             extra={
-                                                <>
-                                                { nextQuestionButton && nextQuestionButton }
-                                                </>
+                                                <PrimaryButton
+                                                    text="Not sure? Get a hint from AI"
+                                                    onClick={toggleQuestionHint}
+                                                />
                                             }
                                         />
-                                    </>
-                                }
-                                {
-                                    isAnswerCorrect === false &&
-                                    <Result
-                                        style={{
-                                            color: '#0F0'
-                                        }}
-                                        status={'error'}
-                                        title={<span className="text-selected">Ops! Wrong answer! Try again!</span>}
-                                        extra={
-                                            <PrimaryButton
-                                                text="Not sure? Get a hint from AI"
-                                                onClick={toggleQuestionHint}
-                                            />
-                                        }
-                                    />
-                                }
-                                {
-                                    isAnswerCorrect === null &&
-                                    <Result
-                                        icon={null}
-                                        title={
-                                            <span className="text-primary">Waiting for your answer</span>
-                                        }
-                                        extra={
-                                            <PrimaryButton
-                                                text="Not sure? Get a hint from AI"
-                                                onClick={toggleQuestionHint}
-                                            />
-                                        }
-                                    />
-                                }
+                                    }
+                                    {
+                                        isAnswerCorrect === null &&
+                                        <Result
+                                            icon={null}
+                                            title={
+                                                <span className="text-primary">Waiting for your answer</span>
+                                            }
+                                            extra={
+                                                <PrimaryButton
+                                                    text="Not sure? Get a hint from AI"
+                                                    onClick={toggleQuestionHint}
+                                                />
+                                            }
+                                        />
+                                    }
+                                </div>
                                 {/* <AiAnswer /> */}
                             </div>
                         </div>
