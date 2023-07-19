@@ -2,7 +2,7 @@ import { NavigateToResource } from "@refinedev/nextjs-router";
 import { ExtendedNextPage } from "./_app";
 import { Avatar, Card, Checkbox } from "antd";
 import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
-import { useList } from "@refinedev/core";
+import { useList, useOne } from "@refinedev/core";
 import { ITechnology, ITest } from "src/interfaces";
 import Link from "next/link";
 import { AiAnswer, FakeAiAnswer, SuperFakeAiAnswer } from "./test/[id]";
@@ -10,10 +10,15 @@ import { Layout } from 'src/components/Layout';
 
 const TestCard = ({ test }: { test: ITest }) => {
 
+    const { data } = useOne({
+        resource: 'technologies',
+        id: (test.technology as unknown) as number // @TODO just get data with technology object
+    });
+
     return (
         <div className="w-1/4 text-primary border-minor border p-5 rounded-xl flex flex-col gap-5 justify-between">
             <div className="italic text-2xl h-32 flex justify-center items-center border-b border-b-primary">
-                typescript
+                {data && <span>{data.data.name}</span>}
             </div>
             <div className="border-b border-b-primary space-y-5 pb-5">
                 <div>{test.name}</div>
@@ -25,27 +30,6 @@ const TestCard = ({ test }: { test: ITest }) => {
                 </Link>
             </div>
         </div>
-    )
-
-    return (
-        <Card
-            style={{ width: 300 }}
-            cover={
-                <img
-                    alt="example"
-                    src="https://picsum.photos/500"
-                />
-            }
-            actions={[
-                <Link href={`/test/${test.id}`}><EditOutlined key="edit" /></Link>,
-            ]}
-        >
-            <Card.Meta
-                avatar={<Avatar src="https://xsgames.co/randomusers/avatar.php?g=pixel" />}
-                title={test.name}
-                description={test.description}
-            />
-        </Card>
     )
 }
 
