@@ -1,3 +1,7 @@
+# Refine Hackathlon Project!
+
+Project build for refine's hackathlon, more here: https://dev.to/devteam/announcing-the-refine-dev-hackathon-29fn
+
 ## What I built 
 
 👨‍💻 Dev-Gym is a basic testing platform with a hacker-inspired design, created to help programmers hone their skills. 
