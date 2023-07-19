@@ -311,7 +311,7 @@ const QuestionView = ({ question, nextQuestionButton }: { question: IQuestion, n
                                         <>
                                             <Result
                                                 status={'success'}
-                                                title={<span className="text-primary">Great, we have done all the operations!</span>}
+                                                title={<span className="text-primary">Correct!</span>}
                                                 extra={
                                                     <>
                                                         {nextQuestionButton && nextQuestionButton}
