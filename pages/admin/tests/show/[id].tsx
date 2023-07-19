@@ -25,6 +25,8 @@ export const TestShow: React.FC<IResourceComponentsProps> = () => {
             <NumberField value={record?.id ?? ""} />
             <Title level={5}>Name</Title>
             <TextField value={record?.name} />
+            <Title level={5}>Description</Title>
+            <TextField value={record?.description} />
             <Title level={5}>Technology</Title>
             {technologyIsLoading ? (
                 <>Loading...</>

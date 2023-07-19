@@ -39,11 +39,6 @@ export const TestCreate: React.FC<IResourceComponentsProps> = () => {
                 <Form.Item
                     label="Description"
                     name={["description"]}
-                    rules={[
-                        {
-                            required: true,
-                        },
-                    ]}
                 >
                     <Input />
                 </Form.Item>

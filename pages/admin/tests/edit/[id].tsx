@@ -40,6 +40,12 @@ export const TestEdit: React.FC<IResourceComponentsProps> = () => {
                     <Input />
                 </Form.Item>
                 <Form.Item
+                    label="Description"
+                    name={["description"]}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
                     label="Technology"
                     name={"technology"}
                     rules={[

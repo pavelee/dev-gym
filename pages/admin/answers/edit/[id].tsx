@@ -42,11 +42,6 @@ export const AnswerEdit: React.FC<IResourceComponentsProps> = () => {
                     label="Correct"
                     valuePropName="checked"
                     name={["correct"]}
-                    rules={[
-                        {
-                            required: true,
-                        },
-                    ]}
                 >
                     <Checkbox>Correct</Checkbox>
                 </Form.Item>
