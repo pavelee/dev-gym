@@ -33,21 +33,6 @@ const TestCard = ({ test }: { test: ITest }) => {
     )
 }
 
-const options = [
-    { label: 'Apple', value: 'Apple' },
-    { label: 'Pear', value: 'Pear' },
-    { label: 'Orange', value: 'Orange' },
-];
-
-const getTechnologyOptions = (technologies: ITechnology[]) => {
-    let t: any[] = [];
-    technologies.map(tech => {
-        // t.push(tech.name);
-        t.push({ label: tech.name, value: tech.id })
-    });
-    return t;
-}
-
 export const Banner = () => {
     return (
         <div className="h-96 w-full rounded-xl">
@@ -55,7 +40,7 @@ export const Banner = () => {
                 <FakeAiAnswer text={`
                 Dear fellow programmer, 
                 Embrace the power of knowledge! Learning new things expands your repertoire, fuels creativity, and propels innovation. Challenge yourself with tests, for they sharpen your skills and ignite growth. Remember, your thirst for learning is your superpower. Keep coding! 
-                Signature: Superpower AI Machine
+                Signature: AI Machine
                 `} />
                 {/* <AiAnswer prompt="As programmer, write motivation text for programmer to learn new things. Text should encourde to do tests. Text should have at least 30 words. Signature as superpower AI machine" /> */}
             </div>
